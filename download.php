@@ -1,5 +1,15 @@
 <?php
 
+require('db_connect.php');
+require('MCrypt.class.php');
+
+//get user connected
+$user = mysql_real_escape_string($_GET['user']);
+
+include_once('auth.php');
+
+$mcrypt = new MCrypt($password);
+
 $filename = 'filecloud/' . basename( $_GET['filename'] );
 
 if( file_exists( $filename ) ) {
@@ -15,7 +25,7 @@ if( file_exists( $filename ) ) {
   */
   ob_clean( );
   flush( );
-  readfile( $filename );
+  echo $mcrypt->encrypt(file_get_contents($filename));
   exit;
 }
 

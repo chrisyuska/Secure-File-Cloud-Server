@@ -29,7 +29,7 @@
                 function decrypt($code) {
                   //$key = $this->hex2bin($key);
                   $code = $this->hex2bin($code);
-                  $iv = $this->iv;
+		  $iv = $this->iv;
 
                   $td = mcrypt_module_open('rijndael-128', '', 'cbc', $iv);
 
@@ -39,7 +39,7 @@
                   mcrypt_generic_deinit($td);
                   mcrypt_module_close($td);
 
-                  return utf8_encode(trim($decrypted));
+                  return utf8_encode(rtrim($decrypted, "\0"));
                 }
 
                 protected function hex2bin($hexdata) {
