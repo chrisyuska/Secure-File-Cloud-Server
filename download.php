@@ -18,6 +18,7 @@ if( file_exists( $filename ) ) {
   header( 'Content-Type: ' . finfo_file( $finfo, $filename ) );
   header( 'Content-Length: ' . filesize( $filename ) );
   header( 'Expires: 0' );
+  header( 'digest: ' . md5_file($filename));
   finfo_close( $finfo );
 
   /**
