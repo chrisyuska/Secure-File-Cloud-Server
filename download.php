@@ -10,11 +10,11 @@ include_once('auth.php');
 
 $mcrypt = new MCrypt($password);
 
-$filename = 'filecloud/' . basename( $_GET['filename'] );
+$filename = 'filecloud/' . basename( $mcrypt->decrypt($_GET['filename']));
 
 if( file_exists( $filename ) ) {
   $finfo = finfo_open( FILEINFO_MIME );
-  header( 'Content-Disposition: attachment; filename= ' . basename( $filename ) );
+  header('Content-Disposition: attachment; filename= ' . $mcrypt->encrypt(basename($filename)));
   header( 'Content-Type: ' . finfo_file( $finfo, $filename ) );
   header( 'Content-Length: ' . filesize( $filename ) );
   header( 'Expires: 0' );
