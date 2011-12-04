@@ -3,12 +3,16 @@
 require('db_connect.php');
 require('MCrypt.class.php');
 
-//get user connected
+//get user connected and corresponding nonce
 $user = mysql_real_escape_string($_GET['user']);
 
 include_once('auth.php');
 
 $mcrypt = new MCrypt($password);
+
+$user_nonce = $mcrypt->decrypt($_GET['nonce']);
+
+include_once('updateNonce.php');
 
 $filename = 'filecloud/' . basename( $mcrypt->decrypt($_GET['filename']));
 
@@ -19,6 +23,7 @@ if( file_exists( $filename ) ) {
   header( 'Content-Length: ' . filesize( $filename ) );
   header( 'Expires: 0' );
   header( 'digest: ' . md5_file($filename));
+  header( 'nonce: ' . $mcrypt->encrypt($nonce)); 
   finfo_close( $finfo );
 
   /**
